@@ -1,0 +1,24 @@
+stateDiagram-v2
+    [*] --> LoginRequest
+    LoginRequest --> ValidateCredentials: POST /api/auth/
+
+    ValidateCredentials --> InvalidCredentials: Wrong username/password
+    InvalidCredentials --> LoginRequest: Return 401
+
+    ValidateCredentials --> GenerateTokens: Valid credentials
+    GenerateTokens --> StoreRefreshToken: Save to database
+    StoreRefreshToken --> ReturnTokens: Return access + refresh tokens
+
+    ReturnTokens --> [*]
+
+    UseAPI: Using Protected API
+    ReturnTokens --> UseAPI: Include Bearer token
+    UseAPI --> ValidateAccessToken: Check token validity
+    ValidateAccessToken --> TokenExpired: Token expired
+    TokenExpired --> RefreshToken: POST /api/auth/refresh/
+    RefreshToken --> NewAccessToken: Valid refresh token
+    NewAccessToken --> UseAPI: Continue with new token
+
+    ValidateAccessToken --> Authorized: Valid token
+    Authorized --> APIResponse: Process request
+    APIResponse --> UseAPI: Continue using API

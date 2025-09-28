@@ -1,0 +1,30 @@
+graph TB
+    subgraph "Client Layer"
+        Web[React Frontend<br/>Next.js 14+]
+        Mobile[Mobile App<br/>Future]
+    end
+
+    subgraph "API Gateway & Load Balancer"
+        Nginx[Nginx Reverse Proxy]
+    end
+
+    subgraph "Application Layer"
+        Backend[Django REST API<br/>Gunicorn Workers]
+        Channels[Django Channels<br/>WebSocket Server]
+        Celery[Celery Workers<br/>Background Tasks]
+    end
+
+    subgraph "Data Layer"
+        Postgres[(PostgreSQL<br/>Primary Database)]
+        Redis[(Redis<br/>Cache & Queue)]
+    end
+
+    Web --> Nginx
+    Mobile --> Nginx
+    Nginx --> Backend
+    Nginx --> Channels
+    Backend --> Postgres
+    Backend --> Redis
+    Channels --> Redis
+    Celery --> Redis
+    Celery --> Postgres

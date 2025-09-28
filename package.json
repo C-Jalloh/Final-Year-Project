@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.17",
+    "@fullcalendar/daygrid": "^6.1.17",
+    "@fullcalendar/interaction": "^6.1.17",
+    "@fullcalendar/list": "^6.1.17",
+    "@fullcalendar/timegrid": "^6.1.17",
+    "@fullcalendar/vue3": "^6.1.17",
+    "vue-router": "^4.0.13"
+  },
+  "devDependencies": {
+    "@types/vue-router": "^2.0.0"
+  }
+}

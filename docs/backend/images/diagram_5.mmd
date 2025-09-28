@@ -1,0 +1,39 @@
+flowchart TD
+    A[User Login] --> B{Check User Role}
+
+    B --> C[Admin Role]
+    B --> D[Doctor Role]
+    B --> E[Nurse Role]
+    B --> F[Receptionist Role]
+    B --> G[Patient Role]
+
+    C --> C1[Full System Access]
+    C1 --> C2[User Management]
+    C2 --> C3[System Settings]
+    C3 --> C4[All API Endpoints]
+
+    D --> D1[Patient Care]
+    D1 --> D2[Prescriptions]
+    D2 --> D3[Medical Encounters]
+    D3 --> D4[Appointment Management]
+
+    E --> E1[Patient Care Tasks]
+    E1 --> E2[Basic Medical Tasks]
+    E2 --> E3[Vital Signs]
+    E3 --> E4[Patient Monitoring]
+
+    F --> F1[Appointment Scheduling]
+    F1 --> F2[Patient Registration]
+    F2 --> F3[Basic Billing]
+    F3 --> F4[Reception Tasks]
+
+    G --> G1[View Own Records]
+    G1 --> G2[Appointment Viewing]
+    G2 --> G3[Bill Viewing]
+    G3 --> G4[Limited Access]
+
+    C4 --> H[API Access Granted]
+    D4 --> H
+    E4 --> H
+    F4 --> H
+    G4 --> H

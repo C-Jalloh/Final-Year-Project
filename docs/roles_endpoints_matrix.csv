@@ -1,0 +1,19 @@
+endpoint,methods,Admin,Doctor,Receptionist,Patient,Nurse,Pharmacist,notes
+/api/vitals/,GET,Allowed,Allowed,Allowed,Denied,Allowed,Denied,List vitals
+/api/vitals/,POST,Allowed,Denied,Denied,Denied,Allowed,Denied,Create vitals (Nurse)
+/api/vitals/{id}/,GET,Allowed,Allowed,Allowed,Denied,Allowed,Denied,Retrieve vitals
+/api/vitals/{id}/,PUT,Allowed,Denied,Denied,Denied,Allowed,Denied,Update vitals
+/api/vitals/{id}/,DELETE,Allowed,Denied,Denied,Denied,Denied,Denied,Delete vitals (admin only)
+/api/inventory/,GET,Allowed,Allowed,Allowed,Denied,Allowed,Allowed,List inventory
+/api/inventory/,POST,Allowed,Denied,Denied,Denied,Denied,Allowed,Create inventory item (Pharmacist)
+/api/inventory/{id}/,PUT,Allowed,Denied,Denied,Denied,Denied,Allowed,Update inventory item (Pharmacist)
+/api/inventory/{id}/,POST adjust_stock,Allowed,Denied,Denied,Denied,Denied,Allowed,Adjust stock (Pharmacist)
+/api/inventory/{id}/,POST dispense,Allowed,Denied,Denied,Denied,Denied,Allowed,Dispense medication (Pharmacist)
+/api/dispensing-logs/,GET,Allowed,Allowed,Allowed,Denied,Denied,Allowed,List dispensing logs
+/api/dispensing-logs/,POST,Allowed,Denied,Denied,Denied,Denied,Allowed,Create dispensing log (Pharmacist)
+/api/dispensing-logs/{id}/,GET,Allowed,Allowed,Allowed,Denied,Denied,Allowed,Get dispensing log
+/api/prescriptions/,GET,Allowed,Allowed,Allowed,Denied,Denied,Denied,List prescriptions
+/api/prescriptions/,POST,Allowed,Allowed,Denied,Denied,Denied,Denied,Create prescription (Doctor)
+/api/patients/,GET,Allowed,Allowed,Allowed,Denied,Allowed,Denied,Patients list
+/api/patients/{id}/,GET,Allowed,Allowed,Allowed,Allowed,Allowed,Denied,Patient detail (patient can view own via patient-portal)
+api_notes, , , , , , , ,This matrix covers critical endpoints; expand as needed

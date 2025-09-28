@@ -1,0 +1,31 @@
+graph TB
+    subgraph "Django REST Framework"
+        Views[API Views<br/>ViewSets]
+        Serializers[Data Serializers<br/>Validation]
+        Permissions[Custom Permissions<br/>Role-based Access]
+        Authentication[JWT Authentication<br/>Token Management]
+    end
+
+    subgraph "Business Logic"
+        Models[Django Models<br/>Database Schema]
+        Managers[Model Managers<br/>Query Logic]
+        Services[Business Services<br/>Domain Logic]
+        Utils[Utility Functions<br/>Helpers]
+    end
+
+    subgraph "Data Access"
+        ORM[Django ORM<br/>Query Building]
+        Migrations[Database Migrations<br/>Schema Evolution]
+        Cache[Redis Cache<br/>Performance]
+    end
+
+    Views --> Serializers
+    Views --> Permissions
+    Views --> Authentication
+    Serializers --> Models
+    Models --> Managers
+    Managers --> ORM
+    ORM --> Migrations
+    Services --> Models
+    Utils --> Services
+    Cache --> ORM

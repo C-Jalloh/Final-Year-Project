@@ -1,0 +1,24 @@
+erDiagram
+    Role ||--o{ User : has
+    User ||--o{ RoleChangeRequest : requests
+    User ||--o{ RoleChangeRequest : reviews
+    Role ||--o{ RoleChangeRequest : requested
+
+    User ||--o{ Patient : manages
+    Patient ||--o{ Appointment : has
+    User ||--o{ Appointment : "as doctor"
+    Appointment ||--o{ Encounter : creates
+    User ||--o{ Encounter : "as doctor"
+    Encounter ||--o{ Prescription : has
+    Prescription ||--o{ Medication : prescribes
+
+    Patient ||--o{ Bill : has
+    Encounter ||--o{ Bill : creates
+    Bill ||--o{ BillItem : contains
+    Bill ||--o{ Payment : receives
+
+    User ||--o{ Notification : receives
+    Appointment ||--o{ Notification : relates
+
+    User ||--o{ AuditLog : creates
+    User ||--o{ LoginActivity : has

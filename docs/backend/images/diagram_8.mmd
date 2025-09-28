@@ -1,0 +1,192 @@
+classDiagram
+    class Role {
+        +id: int
+        +name: str
+        +description: str
+    }
+
+    class User {
+        +id: int
+        +username: str
+        +email: str
+        +first_name: str
+        +last_name: str
+        +role_id: int
+        +language_preference: str
+        +preferences: json
+        +profile_image: str
+        +two_factor_enabled: bool
+        +two_factor_secret: str
+        +is_active: bool
+        +date_joined: datetime
+        +last_login: datetime
+        +login()
+        +has_perm(perm)
+        +has_role(role)
+    }
+
+    class RoleChangeRequest {
+        +id: int
+        +user_id: int
+        +requested_role_id: int
+        +reason: str
+        +status: str
+        +reviewed_by_id: int
+        +review_notes: str
+        +created_at: datetime
+        +updated_at: datetime
+    }
+
+    class Patient {
+        +id: int
+        +unique_id: str
+        +first_name: str
+        +last_name: str
+        +date_of_birth: date
+        +gender: str
+        +contact_info: str
+        +address: str
+        +known_allergies: str
+        +created_at: datetime
+        +updated_at: datetime
+    }
+
+    class Appointment {
+        +id: int
+        +patient_id: int
+        +doctor_id: int
+        +date: date
+        +time: time
+        +status: str
+        +notes: str
+        +created_at: datetime
+        +updated_at: datetime
+    }
+
+    class Encounter {
+        +id: int
+        +patient_id: int
+        +appointment_id: int
+        +doctor_id: int
+        +notes: str
+        +diagnosis: str
+        +created_at: datetime
+        +updated_at: datetime
+    }
+
+    class Medication {
+        +id: int
+        +name: str
+        +generic_name: str
+        +description: str
+        +unit: str
+        +current_stock: int
+        +reorder_level: int
+        +updated_at: datetime
+    }
+
+    class Prescription {
+        +id: int
+        +encounter_id: int
+        +medication_name: str
+        +dosage: str
+        +frequency: str
+        +duration: str
+        +instructions: str
+        +created_at: datetime
+        +updated_at: datetime
+    }
+
+    class Bill {
+        +id: int
+        +patient_id: int
+        +encounter_id: int
+        +date_issued: datetime
+        +total_amount: decimal
+        +is_paid: bool
+        +notes: str
+    }
+
+    class BillItem {
+        +id: int
+        +bill_id: int
+        +description: str
+        +amount: decimal
+        +quantity: int
+    }
+
+    class Payment {
+        +id: int
+        +bill_id: int
+        +amount: decimal
+        +payment_date: datetime
+        +method: str
+        +reference: str
+        +received_by_id: int
+    }
+
+    class Notification {
+        +id: int
+        +user_id: int
+        +title: str
+        +message: str
+        +type: str
+        +is_read: bool
+        +related_appointment_id: int
+        +created_at: datetime
+    }
+
+    class AuditLog {
+        +id: int
+        +user_id: int
+        +action: str
+        +object_type: str
+        +object_id: str
+        +description: str
+        +timestamp: datetime
+        +details: json
+    }
+
+    class LoginActivity {
+        +id: int
+        +user_id: int
+        +timestamp: datetime
+        +ip_address: str
+        +user_agent: str
+        +status: str
+    }
+
+    class SystemSetting {
+        +id: int
+        +key: str
+        +value: str
+        +description: str
+        +category: str
+        +is_public: bool
+        +updated_at: datetime
+    }
+
+    %% Relationships
+    Role --> User : has
+    User --> RoleChangeRequest : requests
+    Role --> RoleChangeRequest : requested
+
+    User --> Patient : manages
+    Patient --> Appointment : has
+    User --> Appointment : "as doctor"
+    Appointment --> Encounter : creates
+    User --> Encounter : "as doctor"
+
+    Encounter --> Prescription : has
+    Prescription --> Medication : prescribes
+
+    Patient --> Bill : has
+    Encounter --> Bill : creates
+    Bill --> BillItem : contains
+    Bill --> Payment : receives
+
+    User --> Notification : receives
+    Appointment --> Notification : relates
+
+    User --> AuditLog : creates
+    User --> LoginActivity : has

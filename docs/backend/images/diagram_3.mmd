@@ -1,0 +1,28 @@
+sequenceDiagram
+    participant Client
+    participant Nginx
+    participant Django
+    participant Auth
+    participant View
+    participant Serializer
+    participant Model
+    participant DB
+
+    Client->>Nginx: HTTP Request
+    Nginx->>Django: Forward Request
+    Django->>Auth: Check JWT Token
+    Auth-->>Django: Token Valid
+
+    Django->>View: Route to View
+    View->>Serializer: Validate Data
+    Serializer-->>View: Data Valid
+
+    View->>Model: Business Logic
+    Model->>DB: Database Query
+    DB-->>Model: Query Result
+
+    Model-->>View: Response Data
+    View-->>Serializer: Serialize Response
+    Serializer-->>Django: JSON Response
+    Django-->>Nginx: HTTP Response
+    Nginx-->>Client: JSON Response

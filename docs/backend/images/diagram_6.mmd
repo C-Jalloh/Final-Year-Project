@@ -1,0 +1,47 @@
+graph TB
+    subgraph "Production Environment"
+        subgraph "Load Balancer"
+            LB[Nginx<br/>SSL Termination & Routing]
+        end
+
+        subgraph "Application Layer"
+            AS[Django App Server<br/>Gunicorn + Django REST]
+            WS[Django Channels<br/>WebSocket Server]
+            CW[Celery Workers<br/>Background Tasks]
+        end
+
+        subgraph "Data Layer"
+            DB[(PostgreSQL<br/>Primary Database)]
+            Redis[(Redis<br/>Cache & Queue)]
+        end
+
+        subgraph "Storage"
+            S3[(File Storage<br/>AWS S3 / MinIO)]
+        end
+    end
+
+    %% Traffic Flow
+    LB --> AS
+    LB --> WS
+
+    %% Application to Data
+    AS --> DB
+    AS --> Redis
+    WS --> Redis
+    CW --> Redis
+    CW --> DB
+
+    %% File Storage
+    AS --> S3
+    CW --> S3
+
+    %% Styling with proper contrast
+    classDef loadbalancer fill:#e3f2fd,stroke:#01579b,stroke-width:2px,color:#01579b
+    classDef application fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c
+    classDef data fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px,color:#1b5e20
+    classDef storage fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100
+
+    class LB loadbalancer
+    class AS,WS,CW application
+    class DB,Redis data
+    class S3 storage
