@@ -78,6 +78,13 @@ echo -e "${BLUE}Using PostgreSQL version: $PG_VERSION${NC}"
 echo -e "${BLUE}Config file: $PG_CONF${NC}"
 
 # Create database and user
+echo -e "${BLUE}Creating database and user...${NC}"
+
+# Drop existing user and database if they exist
+sudo -u postgres psql -c "DROP DATABASE IF EXISTS $DB_NAME;" 2>/dev/null || true
+sudo -u postgres psql -c "DROP USER IF EXISTS $DB_USER;" 2>/dev/null || true
+
+# Create user and database
 sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
 sudo -u postgres psql -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
