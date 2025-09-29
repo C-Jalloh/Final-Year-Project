@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  chelal-hms:
+    build:
+      context: .
+      dockerfile: Dockerfile.single
+    ports:
+      - "80:80"
+    volumes:
+      - ./chelalBackend:/app/chelalBackend
+      - ./chelal-hms-react:/app/chelal-hms-react
+    environment:
+      - DJANGO_SETTINGS_MODULE=Backend.settings
+      - DATABASE_URL=postgresql://chelal_user:chelal_password@localhost:5432/chelal_db
+      - SECRET_KEY=django-insecure-single-container-key-change-in-production
+      - DEBUG=False
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped

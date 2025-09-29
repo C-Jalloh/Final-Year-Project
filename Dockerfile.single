@@ -1,0 +1,105 @@
+# Single Container CHELAL HMS Application
+# This Dockerfile creates a single container with all services
+
+FROM ubuntu:22.04
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=Backend.settings
+ENV DATABASE_URL=postgresql://chelal_user:chelal_password@localhost:5432/chelal_db
+ENV SECRET_KEY=django-insecure-single-container-key-change-in-production
+ENV DEBUG=False
+ENV DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip python3-venv \
+    nodejs npm \
+    postgresql postgresql-contrib \
+    redis-server \
+    supervisor \
+    nginx \
+    curl \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create application directory
+WORKDIR /app
+
+# Copy project files
+COPY . /app/
+
+# Setup PostgreSQL
+USER postgres
+RUN /etc/init.d/postgresql start && \
+    psql --command "CREATE USER chelal_user WITH SUPERUSER PASSWORD 'chelal_password';" && \
+    createdb -O chelal_user chelal_db && \
+    psql -d chelal_db -c "GRANT ALL PRIVILEGES ON DATABASE chelal_db TO chelal_user;"
+
+USER root
+
+# Setup Python environment
+RUN python3 -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# Install Python dependencies
+RUN pip install --upgrade pip
+RUN pip install -r chelalBackend/requirements.txt
+
+# Setup Django
+WORKDIR /app/chelalBackend
+RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate
+
+# Setup React frontend
+WORKDIR /app/chelal-hms-react
+RUN npm install
+RUN npm run build
+
+# Create React build directory for serving
+RUN mkdir -p /var/www/html
+RUN cp -r /app/chelal-hms-react/out/* /var/www/html/ 2>/dev/null || cp -r /app/chelal-hms-react/build/* /var/www/html/ 2>/dev/null || cp -r /app/chelal-hms-react/dist/* /var/www/html/ 2>/dev/null || true
+
+# Configure Nginx
+COPY nginx-single.conf /etc/nginx/nginx.conf
+
+# Create supervisor configuration
+RUN mkdir -p /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Create startup script
+RUN echo '#!/bin/bash\n\
+echo "Starting CHELAL HMS..."\n\
+\n\
+# Start PostgreSQL\n\
+/etc/init.d/postgresql start\n\
+\n\
+# Start Redis\n\
+redis-server --daemonize yes\n\
+\n\
+# Wait for services\n\
+sleep 3\n\
+\n\
+# Start supervisor\n\
+supervisord -c /etc/supervisor/conf.d/supervisord.conf\n\
+\n\
+echo "CHELAL HMS started!"\n\
+echo "Frontend: http://localhost:80"\n\
+echo "Backend API: http://localhost:80/api"\n\
+echo "Admin: http://localhost:80/admin"\n\
+\n\
+# Keep container running\n\
+tail -f /dev/null\n\
+' > /app/start.sh && chmod +x /app/start.sh
+
+# Expose ports
+EXPOSE 80
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost/api/health/ || exit 1
+
+# Start the application
+CMD ["/app/start.sh"]
