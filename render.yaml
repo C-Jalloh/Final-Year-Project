@@ -51,11 +51,12 @@
 
 
 services:
-  # Django Backend Service
+  # Django Backend Service - FREE TIER
   - type: web
     name: chelal-hms-backend
     runtime: python
     rootDir: chelalBackend
+    plan: free  # Use free tier - note: spins down after inactivity
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn Backend.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
@@ -69,18 +70,12 @@ services:
         fromDatabase:
           name: chelal-hms-db
           property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: chelal-hms-redis
-          property: connectionString
+      # Removed Redis for cost savings - can add later if needed
 
-  # Redis for caching and Celery
-  - type: redis
-    name: chelal-hms-redis
-    ipAllowList: []
+# Removed Redis service to save $10/month
 
 databases:
   - name: chelal-hms-db
     databaseName: chelal_hms
     user: chelal_hms
+    plan: free  # Use free database tier
