@@ -15,7 +15,6 @@ ENV DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3 python3-pip python3-venv \
-    nodejs npm \
     postgresql postgresql-contrib \
     redis-server \
     supervisor \
@@ -51,16 +50,6 @@ RUN pip install -r chelalBackend/requirements.txt
 # Setup Django
 WORKDIR /app/chelalBackend
 RUN python manage.py collectstatic --noinput
-RUN python manage.py migrate
-
-# Setup React frontend
-WORKDIR /app/chelal-hms-react
-RUN npm install
-RUN npm run build
-
-# Create React build directory for serving
-RUN mkdir -p /var/www/html
-RUN cp -r /app/chelal-hms-react/out/* /var/www/html/ 2>/dev/null || cp -r /app/chelal-hms-react/build/* /var/www/html/ 2>/dev/null || cp -r /app/chelal-hms-react/dist/* /var/www/html/ 2>/dev/null || true
 
 # Configure Nginx
 COPY nginx-single.conf /etc/nginx/nginx.conf
@@ -82,13 +71,17 @@ redis-server --daemonize yes\n\
 # Wait for services\n\
 sleep 3\n\
 \n\
+# Run Django migrations\n\
+cd /app/chelalBackend\n\
+python manage.py migrate\n\
+\n\
 # Start supervisor\n\
 supervisord -c /etc/supervisor/conf.d/supervisord.conf\n\
 \n\
 echo "CHELAL HMS started!"\n\
-echo "Frontend: http://localhost:80"\n\
-echo "Backend API: http://localhost:80/api"\n\
-echo "Admin: http://localhost:80/admin"\n\
+echo "API available at: http://localhost/api"\n\
+echo "Admin panel at: http://localhost/admin"\n\
+echo "Frontend hosted separately on Vercel"\n\
 \n\
 # Keep container running\n\
 tail -f /dev/null\n\
