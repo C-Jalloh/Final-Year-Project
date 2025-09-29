@@ -2,7 +2,7 @@ services:
   # Django Backend Service
   - type: web
     name: chelal-hms-backend
-    runtime: python3
+    runtime: python
     rootDir: chelalBackend
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn Backend.wsgi:application --bind 0.0.0.0:$PORT
@@ -26,12 +26,10 @@ services:
   # PostgreSQL Database
   - type: pserv
     name: chelal-hms-db
-    ipAllowList: []  # Only accessible by other services in this project
 
   # Redis for caching and Celery
   - type: redis
     name: chelal-hms-redis
-    ipAllowList: []  # Only accessible by other services in this project
 
 # Optional: Background worker for Celery (if needed)
 # - type: worker
