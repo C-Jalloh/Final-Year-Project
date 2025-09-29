@@ -80,6 +80,10 @@ echo -e "${BLUE}Config file: $PG_CONF${NC}"
 # Create database and user
 echo -e "${BLUE}Creating database and user...${NC}"
 
+# Ensure PostgreSQL is running
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
 # Drop existing user and database if they exist
 sudo -u postgres psql -c "DROP DATABASE IF EXISTS $DB_NAME;" 2>/dev/null || true
 sudo -u postgres psql -c "DROP USER IF EXISTS $DB_USER;" 2>/dev/null || true
@@ -89,11 +93,33 @@ sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
 sudo -u postgres psql -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
 
+# Test the connection
+echo -e "${BLUE}Testing database connection...${NC}"
+sudo -u postgres psql -c "SELECT version();" $DB_NAME || {
+    echo -e "${RED}Database connection test failed${NC}"
+    exit 1
+}
+
 # Configure PostgreSQL for local access
 if [ -f "$PG_CONF" ]; then
     sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" "$PG_CONF"
+
+    # Add host entry to pg_hba.conf (make sure it's before the default reject rules)
     echo "host $DB_NAME $DB_USER 127.0.0.1/32 md5" | sudo tee -a "$PG_HBA"
+
     sudo systemctl restart postgresql
+
+    # Wait a moment for PostgreSQL to restart
+    sleep 2
+
+    # Test user connection
+    echo -e "${BLUE}Testing user authentication...${NC}"
+    PGPASSWORD="$DB_PASSWORD" psql -h localhost -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;" || {
+        echo -e "${RED}User authentication test failed${NC}"
+        echo -e "${YELLOW}Checking pg_hba.conf configuration...${NC}"
+        sudo cat "$PG_HBA" | grep "$DB_USER" || echo "User entry not found in pg_hba.conf"
+        exit 1
+    }
 else
     echo -e "${YELLOW}Warning: PostgreSQL config file not found at $PG_CONF${NC}"
 fi
