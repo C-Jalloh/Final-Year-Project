@@ -1,0 +1,14 @@
+[Unit]
+Description=CHELAL HMS Django Application
+After=network.target
+
+[Service]
+User=ejallow
+Group=ejallow
+WorkingDirectory=/home/ejallow/chelal-hms/chelalBackend
+Environment="PATH=/home/ejallow/chelal-hms/venv/bin"
+ExecStart=/home/ejallow/chelal-hms/venv/bin/gunicorn --workers 3 --bind unix:/home/ejallow/chelal-hms/chelal-hms.sock Backend.wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
