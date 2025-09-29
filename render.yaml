@@ -26,10 +26,12 @@ services:
   # PostgreSQL Database
   - type: pserv
     name: chelal-hms-db
+    runtime: postgres
 
   # Redis for caching and Celery
   - type: redis
     name: chelal-hms-redis
+    ipAllowList: []
 
 # Optional: Background worker for Celery (if needed)
 # - type: worker
