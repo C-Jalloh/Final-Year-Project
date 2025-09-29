@@ -169,13 +169,13 @@ importers:
         specifier: ^15.5.3
         version: 15.5.3
       '@types/node':
-        specifier: ^22
+        specifier: ^22.18.6
         version: 22.18.6
       '@types/react':
-        specifier: ^18.3.12
+        specifier: ^18.3.24
         version: 18.3.24
       '@types/react-dom':
-        specifier: ^18.3.1
+        specifier: ^18.3.7
         version: 18.3.7(@types/react@18.3.24)
       eslint:
         specifier: ^9.36.0
