@@ -81,8 +81,26 @@ echo -e "${BLUE}Config file: $PG_CONF${NC}"
 echo -e "${BLUE}Creating database and user...${NC}"
 
 # Ensure PostgreSQL is running
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
+echo -e "${BLUE}Ensuring PostgreSQL service is running...${NC}"
+
+# Try different PostgreSQL service names
+if sudo systemctl is-active --quiet postgresql; then
+    echo "Using postgresql service"
+    PG_SERVICE="postgresql"
+elif sudo systemctl is-active --quiet postgresql@$PG_VERSION-main; then
+    echo "Using postgresql@$PG_VERSION-main service"
+    PG_SERVICE="postgresql@$PG_VERSION-main"
+else
+    echo "Starting PostgreSQL service..."
+    sudo systemctl start postgresql
+    PG_SERVICE="postgresql"
+fi
+
+sudo systemctl enable $PG_SERVICE
+sudo systemctl start $PG_SERVICE
+
+# Wait for PostgreSQL to be ready
+sleep 2
 
 # Drop existing user and database if they exist
 sudo -u postgres psql -c "DROP DATABASE IF EXISTS $DB_NAME;" 2>/dev/null || true
@@ -112,7 +130,7 @@ if [ -f "$PG_CONF" ]; then
 
     # Restart PostgreSQL and wait
     echo -e "${BLUE}Restarting PostgreSQL service...${NC}"
-    sudo systemctl restart postgresql
+    sudo systemctl restart $PG_SERVICE
     sleep 3
 
     # Test user connection
@@ -122,7 +140,7 @@ if [ -f "$PG_CONF" ]; then
         echo -e "${YELLOW}Checking pg_hba.conf configuration...${NC}"
         sudo grep "$DB_USER" "$PG_HBA" || echo "User entry not found in pg_hba.conf"
         echo -e "${YELLOW}Checking if PostgreSQL is running...${NC}"
-        sudo systemctl status postgresql --no-pager -l | head -10
+        sudo systemctl status $PG_SERVICE --no-pager -l | head -10
         exit 1
     }
 else
