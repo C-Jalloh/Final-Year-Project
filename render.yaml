@@ -26,7 +26,6 @@ services:
   # PostgreSQL Database
   - type: pserv
     name: chelal-hms-db
-    runtime: postgres
 
   # Redis for caching and Celery
   - type: redis
