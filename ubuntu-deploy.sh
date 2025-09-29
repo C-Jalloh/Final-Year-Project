@@ -104,20 +104,25 @@ sudo -u postgres psql -c "SELECT version();" $DB_NAME || {
 if [ -f "$PG_CONF" ]; then
     sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" "$PG_CONF"
 
-    # Add host entry to pg_hba.conf (make sure it's before the default reject rules)
+    # Remove any existing entries for this user/database combination
+    sudo sed -i "/host $DB_NAME $DB_USER/d" "$PG_HBA"
+
+    # Add host entry to pg_hba.conf
     echo "host $DB_NAME $DB_USER 127.0.0.1/32 md5" | sudo tee -a "$PG_HBA"
 
+    # Restart PostgreSQL and wait
+    echo -e "${BLUE}Restarting PostgreSQL service...${NC}"
     sudo systemctl restart postgresql
-
-    # Wait a moment for PostgreSQL to restart
-    sleep 2
+    sleep 3
 
     # Test user connection
     echo -e "${BLUE}Testing user authentication...${NC}"
     PGPASSWORD="$DB_PASSWORD" psql -h localhost -U "$DB_USER" -d "$DB_NAME" -c "SELECT 1;" || {
         echo -e "${RED}User authentication test failed${NC}"
         echo -e "${YELLOW}Checking pg_hba.conf configuration...${NC}"
-        sudo cat "$PG_HBA" | grep "$DB_USER" || echo "User entry not found in pg_hba.conf"
+        sudo grep "$DB_USER" "$PG_HBA" || echo "User entry not found in pg_hba.conf"
+        echo -e "${YELLOW}Checking if PostgreSQL is running...${NC}"
+        sudo systemctl status postgresql --no-pager -l | head -10
         exit 1
     }
 else
