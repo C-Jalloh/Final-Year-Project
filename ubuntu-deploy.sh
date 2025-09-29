@@ -62,16 +62,34 @@ print_status "Required packages installed"
 
 # Setup PostgreSQL
 echo -e "${BLUE}Setting up PostgreSQL...${NC}"
+
+# Find PostgreSQL version and config path
+PG_VERSION=$(ls /etc/postgresql/ | head -1)
+if [ -z "$PG_VERSION" ]; then
+    echo -e "${RED}PostgreSQL not found. Installing...${NC}"
+    sudo apt install -y postgresql postgresql-contrib
+    PG_VERSION=$(ls /etc/postgresql/ | head -1)
+fi
+
+PG_CONF="/etc/postgresql/$PG_VERSION/main/postgresql.conf"
+PG_HBA="/etc/postgresql/$PG_VERSION/main/pg_hba.conf"
+
+echo -e "${BLUE}Using PostgreSQL version: $PG_VERSION${NC}"
+echo -e "${BLUE}Config file: $PG_CONF${NC}"
+
+# Create database and user
 sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
 sudo -u postgres psql -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
 
-# Configure PostgreSQL for remote access (optional)
-sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/15/main/postgresql.conf
-echo "host $DB_NAME $DB_USER 127.0.0.1/32 md5" | sudo tee -a /etc/postgresql/15/main/pg_hba.conf
-sudo systemctl restart postgresql
-
-print_status "PostgreSQL configured"
+# Configure PostgreSQL for local access
+if [ -f "$PG_CONF" ]; then
+    sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" "$PG_CONF"
+    echo "host $DB_NAME $DB_USER 127.0.0.1/32 md5" | sudo tee -a "$PG_HBA"
+    sudo systemctl restart postgresql
+else
+    echo -e "${YELLOW}Warning: PostgreSQL config file not found at $PG_CONF${NC}"
+fi
 
 # Setup Redis
 echo -e "${BLUE}Setting up Redis...${NC}"
