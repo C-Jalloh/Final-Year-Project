@@ -3,6 +3,7 @@ services:
   - type: web
     name: chelal-hms-backend
     runtime: python3
+    rootDir: chelalBackend
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn Backend.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
@@ -12,8 +13,6 @@ services:
         generateValue: true
       - key: DJANGO_SETTINGS_MODULE
         value: Backend.settings
-      - key: PYTHONPATH
-        value: /opt/render/project/src/chelalBackend
       - key: DATABASE_URL
         fromDatabase:
           name: chelal-hms-db
