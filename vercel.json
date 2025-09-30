@@ -1,7 +1,7 @@
 {
-  "buildCommand": "pnpm run build",
-  "devCommand": "pnpm run dev",
-  "installCommand": "pnpm install",
+  "buildCommand": "cd chelal-hms-react && pnpm run build",
+  "devCommand": "cd chelal-hms-react && pnpm run dev",
+  "installCommand": "cd chelal-hms-react && pnpm install",
   "outputDirectory": "chelal-hms-react/.next",
   "framework": "nextjs"
 }
