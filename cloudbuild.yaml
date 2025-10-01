@@ -47,4 +47,4 @@ options:
 
 # Substitutions for environment variables
 substitutions:
-  _SECRET_KEY: 'your-secret-key-here-change-in-production'
+  _SECRET_KEY: 'django-insecure-change-this-in-production-key'
