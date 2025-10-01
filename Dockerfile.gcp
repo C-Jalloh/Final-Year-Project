@@ -1,0 +1,93 @@
+# Google Cloud Run Dockerfile for CHELAL HMS Backend
+FROM ubuntu:22.04
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=Backend.settings
+ENV SECRET_KEY=django-insecure-change-this-in-production
+ENV DEBUG=False
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip python3-venv \
+    postgresql postgresql-contrib \
+    redis-server \
+    supervisor \
+    nginx \
+    curl \
+    build-essential \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create application directory
+WORKDIR /app
+
+# Copy project files
+COPY . /app/
+
+# Setup PostgreSQL
+USER postgres
+RUN /etc/init.d/postgresql start && \
+    psql --command "CREATE USER chelal_user WITH SUPERUSER PASSWORD 'chelal_password';" && \
+    createdb -O chelal_user chelal_db && \
+    psql -d chelal_db -c "GRANT ALL PRIVILEGES ON DATABASE chelal_db TO chelal_user;"
+
+USER root
+
+# Setup Python environment
+RUN python3 -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
+
+# Install Python dependencies
+RUN pip install --upgrade pip
+RUN pip install -r chelalBackend/requirements.txt
+
+# Setup Django
+WORKDIR /app/chelalBackend
+RUN python manage.py collectstatic --noinput
+
+# Configure Nginx
+COPY nginx-gcp.conf /etc/nginx/nginx.conf
+
+# Create supervisor configuration
+RUN mkdir -p /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Create startup script
+RUN echo '#!/bin/bash\n\
+echo "Starting CHELAL HMS..."\n\
+\n\
+# Start PostgreSQL\n\
+/etc/init.d/postgresql start\n\
+\n\
+# Start Redis\n\
+redis-server --daemonize yes\n\
+\n\
+# Wait for services\n\
+sleep 3\n\
+\n\
+# Run Django migrations\n\
+cd /app/chelalBackend\n\
+python manage.py migrate\n\
+\n\
+# Start supervisor\n\
+supervisord -c /etc/supervisor/conf.d/supervisord.conf\n\
+\n\
+echo "CHELAL HMS started!"\n\
+echo "API available at: http://localhost/api"\n\
+echo "Admin panel at: http://localhost/admin"\n\
+\n\
+# Keep container running\n\
+tail -f /dev/null\n\
+' > /app/start.sh && chmod +x /app/start.sh
+
+# Expose port (Cloud Run will set PORT environment variable)
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${PORT:-8080}/api/health/ || exit 1
+
+# Start the application
+CMD ["/app/start.sh"]
