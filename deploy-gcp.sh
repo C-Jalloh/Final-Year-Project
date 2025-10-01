@@ -30,9 +30,25 @@ echo "✅ Using project: $PROJECT_ID"
 
 # Enable required APIs
 echo "🔧 Enabling required APIs..."
-gcloud services enable cloudbuild.googleapis.com
-gcloud services enable run.googleapis.com
-gcloud services enable containerregistry.googleapis.com
+gcloud services enable cloudbuild.googleapis.com --quiet
+if [ $? -ne 0 ]; then
+    echo "❌ Failed to enable Cloud Build API. Please check your permissions."
+    exit 1
+fi
+
+gcloud services enable run.googleapis.com --quiet
+if [ $? -ne 0 ]; then
+    echo "❌ Failed to enable Cloud Run API. Please check your permissions."
+    exit 1
+fi
+
+gcloud services enable containerregistry.googleapis.com --quiet
+if [ $? -ne 0 ]; then
+    echo "❌ Failed to enable Container Registry API. Please check your permissions."
+    exit 1
+fi
+
+echo "✅ APIs enabled successfully"
 
 # Build and deploy using Cloud Build
 echo "🏗️ Building and deploying to Cloud Run..."

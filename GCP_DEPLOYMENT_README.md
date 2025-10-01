@@ -4,12 +4,36 @@ This guide explains how to deploy the CHELAL HMS Django backend to Google Cloud 
 
 ## Prerequisites
 
-1. **Google Cloud Account**: Sign up at https://cloud.google.com/
-2. **Google Cloud SDK**: Install from https://cloud.google.com/sdk/docs/install
+1. **Google Cloud Account**: Sign up at [https://cloud.google.com/](https://cloud.google.com/)
+2. **Google Cloud SDK**: Install from [https://cloud.google.com/sdk/docs/install](https://cloud.google.com/sdk/docs/install)
 3. **Project**: Create a new GCP project or use an existing one
-4. **Billing**: Enable billing for your project
+4. **Billing**: Enable billing for your project (Cloud Run has a generous free tier)
 
-## Quick Deployment
+## Quick Start
+
+### Step 1: Run Setup Script
+```bash
+# Make executable and run setup
+chmod +x setup-gcp.sh
+./setup-gcp.sh
+```
+
+This script will:
+- Check Google Cloud SDK installation
+- Authenticate with Google Cloud
+- Help you select/create a project
+- Enable required APIs
+- Verify billing status
+
+### Step 2: Deploy
+```bash
+# Deploy to Cloud Run
+./deploy-gcp.sh
+```
+
+## Manual Setup (Alternative)
+
+If you prefer manual setup:
 
 ### 1. Install Google Cloud SDK
 ```bash
