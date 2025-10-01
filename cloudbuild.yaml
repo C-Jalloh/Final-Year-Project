@@ -4,7 +4,7 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/chelal-hms-backend:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/chelal-hms-backend:latest'
       - '-f'
       - 'Dockerfile.gcp'
       - '.'
@@ -13,7 +13,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
-      - 'gcr.io/$PROJECT_ID/chelal-hms-backend:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/chelal-hms-backend:latest'
 
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -23,7 +23,7 @@ steps:
       - 'deploy'
       - 'chelal-hms-backend'
       - '--image'
-      - 'gcr.io/$PROJECT_ID/chelal-hms-backend:$COMMIT_SHA'
+      - 'gcr.io/$PROJECT_ID/chelal-hms-backend:latest'
       - '--region'
       - 'us-central1'
       - '--platform'
