@@ -6,7 +6,7 @@ from .views import (
     NotificationViewSet, AuditLogViewSet, LoginActivityViewSet, SystemSettingViewSet, RoleChangeRequestViewSet,
     MyTokenObtainPairView, MyTokenRefreshView, RegisterView, dashboard, dashboard_stats,
     report_patient_count, report_appointments_today, report_appointments_by_doctor, report_top_prescribed_medications,
-    report_billing_stats, profile_view, user_preferences_view, health_check, sync_offline_data
+    report_billing_stats, profile_view, user_preferences_view, health_check, sync_offline_data, populate_database
 )
 
 router = routers.DefaultRouter()
@@ -48,4 +48,5 @@ urlpatterns = [
     # Health check and sync
     path('health/', health_check, name='health-check'),
     path('sync_offline_data/', sync_offline_data, name='sync_offline_data'),
+    path('populate-database/', populate_database, name='populate_database'),
 ]

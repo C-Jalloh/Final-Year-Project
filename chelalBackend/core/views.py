@@ -444,3 +444,28 @@ def health_check(request):
 def sync_offline_data(request):
     """Sync offline data (placeholder implementation)"""
     return Response({'status': 'sync completed'})
+
+# Database population endpoint
+@api_view(['POST'])
+@permission_classes([IsAdminUser])  # Only admin users can populate database
+def populate_database(request):
+    """Populate database with sample data"""
+    try:
+        from django.core.management import call_command
+        from io import StringIO
+
+        # Capture command output
+        out = StringIO()
+        call_command('populate_db', stdout=out, verbosity=2)
+
+        output = out.getvalue()
+        return Response({
+            'status': 'success',
+            'message': 'Database populated successfully',
+            'output': output
+        })
+    except Exception as e:
+        return Response({
+            'status': 'error',
+            'message': f'Failed to populate database: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
