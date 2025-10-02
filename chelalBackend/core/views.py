@@ -36,7 +36,7 @@ User = get_user_model()
 
 @method_decorator(csrf_exempt, name='dispatch')
 class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = EmailTokenObtainPairSerializer  # Use custom serializer for email/username login
+    serializer_class = TokenObtainPairSerializer  # Temporarily use standard serializer to debug 500 error
 
 @method_decorator(csrf_exempt, name='dispatch')
 class MyTokenRefreshView(TokenRefreshView):
