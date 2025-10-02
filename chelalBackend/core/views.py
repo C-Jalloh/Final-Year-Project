@@ -395,8 +395,6 @@ def report_billing_stats(request):
 
 
 # Profile and Preferences
-@api_view(['GET', 'PUT'])
-@permission_classes([IsAuthenticated])
 @api_view(['GET', 'PUT', 'PATCH'])
 @permission_classes([IsAuthenticated])
 def profile_view(request):
