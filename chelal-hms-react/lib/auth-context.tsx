@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               email: 'dev@chelal.com',
               first_name: 'Dev',
               last_name: 'User',
-              role: 'admin',
+              role: 'Admin',
               is_staff: true
             }
             setUser(mockUser)
@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             email: 'dev@chelal.com',
             first_name: 'Dev',
             last_name: 'User',
-            role: 'admin',
+            role: 'Admin',
             is_staff: true
           })
         }
@@ -104,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email: 'dev@chelal.com',
           first_name: 'Dev',
           last_name: 'User',
-          role: 'admin',
+          role: 'Admin',
           is_staff: true
         })
       } finally {
