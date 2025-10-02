@@ -20,12 +20,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-me-in-producti
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# ALLOWED_HOSTS for Render deployment
+# ALLOWED_HOSTS for Render deployment and Cloud Run
 RENDER_EXTERNAL_URL = os.environ.get('RENDER_EXTERNAL_URL')
+CLOUD_RUN_URL = os.environ.get('CLOUD_RUN_URL', 'chelal-hms-backend-1857840577.us-central1.run.app')
 if RENDER_EXTERNAL_URL:
-    ALLOWED_HOSTS = [RENDER_EXTERNAL_URL.replace('https://', ''), 'localhost', '127.0.0.1']
+    ALLOWED_HOSTS = [RENDER_EXTERNAL_URL.replace('https://', ''), 'localhost', '127.0.0.1', CLOUD_RUN_URL]
 else:
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,{CLOUD_RUN_URL}').split(',')
 
 # Add Render's internal domain if available
 if os.environ.get('RENDER_SERVICE_NAME'):
