@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -34,9 +34,9 @@ import {
   Stethoscope,
 } from "lucide-react"
 import { useTheme } from "next-themes"
-import { useAuth } from "@/lib/auth-context"
-import { ROLES, hasAnyRole } from "@/lib/permissions"
-import type { Role } from "@/lib/permissions"
+import { useAuth } from "../../lib/auth-context"
+import { ROLES, hasAnyRole } from "../../lib/permissions"
+import type { Role } from "../../lib/permissions"
 
 interface NavigationItem {
   name: string
