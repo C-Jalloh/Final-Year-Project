@@ -11,7 +11,7 @@ import {
 } from '../lib/types/dashboard';
 
 // API Base URL - adjust based on your backend configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://chelal-hms-backend-34t7ysolua-uc.a.run.app/api';
 
 // Combined dashboard data interface
 interface CombinedDashboardData {

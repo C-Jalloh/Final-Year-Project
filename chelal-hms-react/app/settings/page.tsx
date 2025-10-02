@@ -144,7 +144,7 @@ const SettingsPage: React.FC = () => {
     role: typeof user?.role === 'object' ? user?.role?.name || 'Chief Medical Officer' : user?.role || 'Chief Medical Officer',
     department: 'Administration',
     phone: '+1 (555) 123-4567',
-    avatar: user?.avatar ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}${user.avatar}` : undefined,
+    avatar: user?.avatar ? `${process.env.NEXT_PUBLIC_API_URL || 'https://chelal-hms-backend-34t7ysolua-uc.a.run.app'}${user.avatar}` : undefined,
     joinDate: '2023-01-15',
     lastLogin: '2025-09-20T10:30:00Z'
   }), [user])

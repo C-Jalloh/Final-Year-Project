@@ -3,7 +3,7 @@ import apiClient from "../api-client"
 import { useState, useEffect } from "react"
 
 // Google Calendar API configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://chelal-hms-backend-34t7ysolua-uc.a.run.app/api'
 
 export interface GoogleCalendarEvent {
   id?: string
@@ -320,7 +320,7 @@ export function useGoogleCalendar() {
     const handleMessage = (event: MessageEvent) => {
       // Only accept messages from our backend domain
       const allowedOrigins = [
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+        process.env.NEXT_PUBLIC_API_URL || 'https://chelal-hms-backend-34t7ysolua-uc.a.run.app',
         window.location.origin
       ]
 
