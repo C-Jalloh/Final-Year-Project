@@ -2,12 +2,12 @@ import { User } from '@/lib/auth-context'
 
 // Define available roles - matching backend role names exactly
 export const ROLES = {
-  ADMIN: 'admin',
-  DOCTOR: 'DOCTOR',
-  NURSE: 'NURSE',
-  PHARMACIST: 'PHARMACIST',
-  RECEPTIONIST: 'receptionist',
-  PATIENT: 'PATIENT',
+  ADMIN: 'Admin',
+  DOCTOR: 'Doctor',
+  NURSE: 'Nurse',
+  PHARMACIST: 'Pharmacist',
+  RECEPTIONIST: 'Receptionist',
+  PATIENT: 'Patient',
   DEFAULTUSER: 'defaultuser'
 } as const
 
