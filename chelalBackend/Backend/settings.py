@@ -24,9 +24,9 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 RENDER_EXTERNAL_URL = os.environ.get('RENDER_EXTERNAL_URL')
 CLOUD_RUN_URL = os.environ.get('CLOUD_RUN_URL', 'chelal-hms-backend-1857840577.us-central1.run.app')
 if RENDER_EXTERNAL_URL:
-    ALLOWED_HOSTS = [RENDER_EXTERNAL_URL.replace('https://', ''), 'localhost', '127.0.0.1', CLOUD_RUN_URL]
+    ALLOWED_HOSTS = [RENDER_EXTERNAL_URL.replace('https://', ''), 'localhost', '127.0.0.1', CLOUD_RUN_URL, 'https://www.brikamahms.org/']
 else:
-    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,{CLOUD_RUN_URL}').split(',')
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', f'localhost,127.0.0.1,{CLOUD_RUN_URL},https://www.brikamahms.org/').split(',')
 
 # Add Render's internal domain if available
 if os.environ.get('RENDER_SERVICE_NAME'):
@@ -198,6 +198,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://chelal-hms-react.onrender.com",  # Update with your frontend URL
+    "https://www.brikamahms.org",  # Production frontend domain
 ]
 
 # Add Render external URL to CORS if available
