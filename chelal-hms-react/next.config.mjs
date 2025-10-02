@@ -29,9 +29,10 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', 'react-easy-crop'],
   },
   webpack: (config, { dev }) => {
+    // Ensure @ alias points to the src directory
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': resolve(__dirname),
+      '@': resolve(__dirname, '.'),
     }
 
     // Optimize bundle splitting
