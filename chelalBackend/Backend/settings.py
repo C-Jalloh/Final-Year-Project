@@ -188,7 +188,6 @@ SIMPLE_JWT = {
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
-    'axes.backends.AxesStandaloneBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
