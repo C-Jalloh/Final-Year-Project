@@ -17,7 +17,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Skeleton } from "@/components/ui/skeleton";
-import { ChartDataPoint, TimeSeriesDataPoint, MultiSeriesDataPoint } from '@/lib/types/dashboard';
+import { ChartDataPoint, TimeSeriesDataPoint, MultiSeriesDataPoint } from '../../lib/types/dashboard';
 
 interface BaseChartProps {
   data: any[];

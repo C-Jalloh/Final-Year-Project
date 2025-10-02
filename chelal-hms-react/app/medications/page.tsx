@@ -59,7 +59,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { MedicationsSkeleton } from "@/components/ui/skeleton-loader"
 import { useToast } from "@/hooks/use-toast"
-import { apiHelpers } from "@/lib/api-client"
+import { apiHelpers } from '../../lib/api-client'
 import { MedicationForm, Medication } from "@/components/medications/medication-form"
 import { MedicationDetails } from "@/components/medications/medication-details"
 import { MedicationCategories } from "@/components/medications/medication-categories"

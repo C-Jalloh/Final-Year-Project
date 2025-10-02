@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { useAuth } from '../../lib/auth-context'
-import { hasAnyRole, hasRole, isAdmin, isDoctor, isReceptionist, isPatient, isStaff, canManageUsers, canAccessPatientData, canManageAppointments, canManageMedications, canAccessBilling, canAccessReports, canManageSettings } from '@/lib/permissions'
-import type { Role } from '@/lib/permissions'
+import { hasAnyRole, hasRole, isAdmin, isDoctor, isReceptionist, isPatient, isStaff, canManageUsers, canAccessPatientData, canManageAppointments, canManageMedications, canAccessBilling, canAccessReports, canManageSettings } from '../../lib/permissions'
+import type { Role } from '../../lib/permissions'
 
 interface ConditionalRenderProps {
   children: React.ReactNode

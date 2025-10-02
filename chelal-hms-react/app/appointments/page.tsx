@@ -51,7 +51,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AppointmentsSkeleton } from "@/components/ui/skeleton-loader"
 import { useToast } from "@/hooks/use-toast"
 import { Input } from "@/components/ui/input"
-import { apiHelpers } from "@/lib/api-client"
+import { apiHelpers } from '../../lib/api-client'
 
 // Transform backend appointment data to frontend format
 const transformAppointmentData = (backendAppointment: any): Appointment => {

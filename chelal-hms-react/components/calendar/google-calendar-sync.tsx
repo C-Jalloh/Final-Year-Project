@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "../ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Badge } from "../ui/badge"
 import {
   Calendar as CalendarIcon,
   RefreshCw,
@@ -20,10 +20,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { useGoogleCalendar } from "@/lib/services/google-calendar-new"
-import { Appointment } from "@/components/calendar"
-import { useToast } from "@/hooks/use-toast"
+} from "../ui/dialog"
+import { useGoogleCalendar } from "../../lib/services/google-calendar-new"
+import { Appointment } from "./index"
+import { useToast } from "../../hooks/use-toast"
 
 interface GoogleCalendarSyncProps {
   appointments: Appointment[]

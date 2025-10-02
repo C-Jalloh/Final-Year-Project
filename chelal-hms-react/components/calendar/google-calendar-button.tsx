@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
+import { Button } from "../ui/button"
 import { CheckCircle, Calendar, RefreshCw } from "lucide-react"
-import { useGoogleCalendar } from "@/lib/services/google-calendar-new"
-import { useToast } from "@/hooks/use-toast"
+import { useGoogleCalendar } from "../../lib/services/google-calendar-new"
+import { useToast } from "../../hooks/use-toast"
 
 interface GoogleCalendarButtonProps {
   appointments: any[]
