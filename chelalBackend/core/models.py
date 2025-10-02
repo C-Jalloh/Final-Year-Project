@@ -14,12 +14,12 @@ class Role(models.Model):
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
-    role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True)
-    language_preference = models.CharField(max_length=10, default='en', choices=[('en', 'English'), ('fr', 'French'), ('sw', 'Swahili')])
-    preferences = models.JSONField(default=dict, blank=True, null=True)  # For theme, etc.
-    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
-    two_factor_enabled = models.BooleanField(default=False)
-    two_factor_secret = models.CharField(max_length=64, blank=True, null=True)
+    # role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True, blank=True)
+    # language_preference = models.CharField(max_length=10, default='en', choices=[('en', 'English'), ('fr', 'French'), ('sw', 'Swahili')])
+    # preferences = models.JSONField(default=dict, blank=True, null=True)  # For theme, etc.
+    # profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    # two_factor_enabled = models.BooleanField(default=False)
+    # two_factor_secret = models.CharField(max_length=64, blank=True, null=True)
     # Future: api_keys, delegates, etc.
 
 class Patient(models.Model):

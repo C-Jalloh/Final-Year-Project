@@ -10,36 +10,36 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
-    role = RoleSerializer(read_only=True)
-    role_id = serializers.IntegerField(write_only=True, required=False)
+    # role = RoleSerializer(read_only=True)
+    # role_id = serializers.IntegerField(write_only=True, required=False)
     # profile_image = serializers.ImageField(required=False, allow_null=True)
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'role_id', 'language_preference', 'preferences', 'two_factor_enabled']  # 'profile_image',
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']  # 'role', 'role_id', 'language_preference', 'preferences', 'two_factor_enabled'  # 'profile_image',
     
     def create(self, validated_data):
-        role_id = validated_data.pop('role_id', None)
+        # role_id = validated_data.pop('role_id', None)
         user = super().create(validated_data)
-        if role_id:
-            try:
-                role = Role.objects.get(id=role_id)
-                user.role = role
-                user.save()
-            except Role.DoesNotExist:
-                pass
+        # if role_id:
+        #     try:
+        #         role = Role.objects.get(id=role_id)
+        #         user.role = role
+        #         user.save()
+        #     except Role.DoesNotExist:
+        #         pass
         return user
     
     def update(self, instance, validated_data):
-        role_id = validated_data.pop('role_id', None)
+        # role_id = validated_data.pop('role_id', None)
         user = super().update(instance, validated_data)
-        if role_id is not None:
-            try:
-                role = Role.objects.get(id=role_id)
-                user.role = role
-                user.save()
-            except Role.DoesNotExist:
-                pass
+        # if role_id is not None:
+        #     try:
+        #         role = Role.objects.get(id=role_id)
+        #         user.role = role
+        #         user.save()
+        #     except Role.DoesNotExist:
+        #         pass
         return user
 
 class PatientSerializer(serializers.ModelSerializer):
