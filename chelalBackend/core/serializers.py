@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Role, User, Patient, Appointment, Encounter, Prescription, Medication, Bill, BillItem, Payment, Notification, AuditLog, LoginActivity, SystemSetting, RoleChangeRequest
 from datetime import date, timedelta
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -186,3 +187,32 @@ class RoleChangeRequestSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at', 'reviewed_by', 'reviewed_by_name', 'review_notes']
+
+class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = get_user_model().USERNAME_FIELD
+
+    def validate(self, attrs):
+        # Allow login with either username or email
+        username = attrs.get('username')
+        password = attrs.get('password')
+
+        if username and password:
+            # Try to get user by username first
+            user = None
+            try:
+                user = get_user_model().objects.get(username=username)
+            except get_user_model().DoesNotExist:
+                # If not found by username, try email
+                try:
+                    user = get_user_model().objects.get(email=username)
+                except get_user_model().DoesNotExist:
+                    pass
+
+            if user and user.check_password(password):
+                attrs['username'] = user.username  # Ensure we use the actual username
+            else:
+                raise serializers.ValidationError('No active account found with the given credentials')
+        else:
+            raise serializers.ValidationError('Must include username and password')
+
+        return super().validate(attrs)

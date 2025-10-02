@@ -11,7 +11,8 @@ from .serializers import (
     RoleSerializer, UserSerializer, PatientSerializer, AppointmentSerializer,
     EncounterSerializer, PrescriptionSerializer, MedicationSerializer,
     BillSerializer, BillItemSerializer, PaymentSerializer, NotificationSerializer,
-    AuditLogSerializer, LoginActivitySerializer, SystemSettingSerializer, RoleChangeRequestSerializer, UserPreferencesSerializer
+    AuditLogSerializer, LoginActivitySerializer, SystemSettingSerializer, RoleChangeRequestSerializer, UserPreferencesSerializer,
+    EmailTokenObtainPairSerializer
 )
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
