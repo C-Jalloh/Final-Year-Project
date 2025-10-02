@@ -31,7 +31,9 @@ USER postgres
 RUN /etc/init.d/postgresql start && \
     psql --command "CREATE USER chelal_user WITH SUPERUSER PASSWORD 'chelal_password';" && \
     createdb -O chelal_user chelal_db && \
-    psql -d chelal_db -c "GRANT ALL PRIVILEGES ON DATABASE chelal_db TO chelal_user;"
+    psql -d chelal_db -c "GRANT ALL PRIVILEGES ON DATABASE chelal_db TO chelal_user;" && \
+    echo "host all all 127.0.0.1/32 md5" >> /etc/postgresql/14/main/pg_hba.conf && \
+    echo "host all all ::1/128 md5" >> /etc/postgresql/14/main/pg_hba.conf
 
 USER root
 
