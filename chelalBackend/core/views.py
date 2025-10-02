@@ -397,12 +397,14 @@ def report_billing_stats(request):
 # Profile and Preferences
 @api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
+@api_view(['GET', 'PUT', 'PATCH'])
+@permission_classes([IsAuthenticated])
 def profile_view(request):
     """User profile view"""
     if request.method == 'GET':
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
-    elif request.method == 'PUT':
+    elif request.method in ['PUT', 'PATCH']:
         serializer = UserSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
