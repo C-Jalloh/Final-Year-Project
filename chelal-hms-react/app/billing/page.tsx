@@ -14,7 +14,7 @@ import { BillDetails } from '@/components/billing/BillDetails'
 import { PaymentForm } from '@/components/billing/PaymentForm'
 import { BillingStats } from '@/components/billing/BillingStats'
 import { AppLayout } from '@/components/layout/app-layout'
-import { useAuth } from '@/lib/auth-context'
+import { useAuth } from '../../lib/auth-context'
 import { ConditionalRender } from '@/components/auth/ConditionalRender'
 import { ROLES } from '@/lib/permissions'
 import { BillingSkeleton } from "@/components/ui/skeleton-loader"

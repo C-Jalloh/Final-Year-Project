@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Eye, EyeOff, Stethoscope, Shield, Users } from "lucide-react"
 import { useTheme } from "next-themes"
-import { useAuth } from "@/lib/auth-context"
+import { useAuth } from "../../lib/auth-context"
 
 export default function LoginPage() {
   const [username, setUsername] = useState("")

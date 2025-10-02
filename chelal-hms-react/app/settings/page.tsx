@@ -44,7 +44,7 @@ import {
   Send
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { useAuth } from '@/lib/auth-context'
+import { useAuth } from '../../lib/auth-context'
 import { apiHelpers } from '@/lib/api-client'
 import apiClient from '@/lib/api-client'
 import { AdminOnly } from '@/components/auth/ConditionalRender'
