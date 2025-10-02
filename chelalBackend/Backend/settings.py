@@ -104,7 +104,7 @@ else:
             'NAME': os.environ.get('DB_NAME', 'chelal_hms'),
             'USER': os.environ.get('DB_USER', 'postgres'),
             'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'HOST': os.environ.get('DB_HOST', '/cloudsql/brikamahms:us-central1:chelal-hms-db'),
             'PORT': os.environ.get('DB_PORT', '5432'),
         }
     }
