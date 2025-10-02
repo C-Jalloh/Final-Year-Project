@@ -12,11 +12,11 @@ class RoleSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     role = RoleSerializer(read_only=True)
     role_id = serializers.IntegerField(write_only=True, required=False)
-    profile_image = serializers.ImageField(required=False, allow_null=True)
+    # profile_image = serializers.ImageField(required=False, allow_null=True)
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'role_id', 'language_preference', 'preferences', 'profile_image', 'two_factor_enabled']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'role', 'role_id', 'language_preference', 'preferences', 'two_factor_enabled']  # 'profile_image',
     
     def create(self, validated_data):
         role_id = validated_data.pop('role_id', None)
