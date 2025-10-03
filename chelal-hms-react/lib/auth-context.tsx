@@ -52,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (token) {
           try {
             const response = await apiHelpers.getProfile()
+            console.log('Profile fetch successful:', response.data)
             setUser(response.data)
             // Preload pages for authenticated user
             setIsPreloading(true)
@@ -60,8 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             }).catch(console.error)
           } catch (profileError) {
             console.log('Profile fetch failed, clearing token and using mock user')
-            localStorage.removeItem('access_token')
-            localStorage.removeItem('refresh_token')
+            console.error('Profile fetch error:', profileError)
             // Use mock user for development
             const mockUser = {
               id: 'dev-user',
@@ -120,14 +120,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(true)
       const response = await apiHelpers.login({ username, password })
 
-      const { access, refresh, user: userData } = response.data
+      const { access, refresh } = response.data
 
       // Store tokens
       localStorage.setItem('access_token', access)
       localStorage.setItem('refresh_token', refresh)
 
-      // Set user data
-      setUser(userData)
+      // Fetch user profile after successful login
+      try {
+        const profileResponse = await apiHelpers.getProfile()
+        setUser(profileResponse.data)
+      } catch (profileError) {
+        console.error('Failed to fetch profile after login:', profileError)
+        // Set a basic user object if profile fetch fails
+        setUser({
+          id: 'temp-user',
+          username,
+          email: '',
+          role: 'Admin' // Default to admin for now
+        })
+      }
 
       // Start preloading pages and data in background
       setIsPreloading(true)

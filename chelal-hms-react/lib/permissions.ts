@@ -21,9 +21,14 @@ export const hasRole = (user: User | null, role: Role): boolean => {
 }
 
 export const hasAnyRole = (user: User | null, roles: Role[]): boolean => {
-  if (!user?.role) return false
+  if (!user?.role) {
+    console.log('hasAnyRole: No user role found', { user })
+    return false
+  }
   const userRole = typeof user.role === 'string' ? user.role : user.role.name
-  return roles.includes(userRole as Role)
+  const hasRole = roles.includes(userRole as Role)
+  console.log('hasAnyRole check:', { userRole, roles, hasRole })
+  return hasRole
 }
 
 export const isAdmin = (user: User | null): boolean => {

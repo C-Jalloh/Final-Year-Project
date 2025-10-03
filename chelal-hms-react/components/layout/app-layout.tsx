@@ -111,6 +111,15 @@ function Sidebar({ className }: { className?: string }) {
     hasAnyRole(user, item.allowedRoles)
   )
 
+  // Debug logging
+  console.log('Sidebar Debug:', {
+    user,
+    userRole: user?.role,
+    userRoleName: typeof user?.role === 'string' ? user?.role : user?.role?.name,
+    filteredNavigationCount: filteredNavigation.length,
+    allNavigationCount: navigation.length
+  })
+
   return (
     <div className={cn("pb-12", className)}>
       <div className="space-y-4 py-4">
