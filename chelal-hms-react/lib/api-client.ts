@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios'
 
 // API Base URL - should match your Django backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://chelal-hms-backend-34t7ysolua-uc.a.run.app/api'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://chelal-hms-backend-1857840577.us-central1.run.app/api'
 
 // Create axios instance with default configuration
 const apiClient: AxiosInstance = axios.create({

@@ -79,6 +79,8 @@ class Command(BaseCommand):
                 'first_name': 'System',
                 'last_name': 'Administrator',
                 'role': admin_role,
+                'is_staff': True,
+                'is_superuser': True,
             }
         )
         if created:
