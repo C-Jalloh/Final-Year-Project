@@ -104,7 +104,7 @@ interface AppLayoutProps {
 
 function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname()
-  const { user } = useAuth()
+  const { user, isLoading } = useAuth()
 
   // Filter navigation items based on user roles
   const filteredNavigation = navigation.filter(item =>
@@ -117,8 +117,32 @@ function Sidebar({ className }: { className?: string }) {
     userRole: user?.role,
     userRoleName: typeof user?.role === 'string' ? user?.role : user?.role?.name,
     filteredNavigationCount: filteredNavigation.length,
-    allNavigationCount: navigation.length
+    allNavigationCount: navigation.length,
+    isLoading
   })
+
+  // Show loading state while authentication is being checked
+  if (isLoading) {
+    return (
+      <div className={cn("pb-12", className)}>
+        <div className="space-y-4 py-4">
+          <div className="px-3 py-2">
+            <div className="flex items-center mb-6">
+              <Stethoscope className="h-8 w-8 text-primary mr-3" />
+              <h2 className="text-lg font-semibold">Chelal HMS</h2>
+            </div>
+            <div className="space-y-1">
+              <div className="animate-pulse space-y-2">
+                <div className="h-8 bg-muted rounded"></div>
+                <div className="h-8 bg-muted rounded"></div>
+                <div className="h-8 bg-muted rounded"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={cn("pb-12", className)}>
