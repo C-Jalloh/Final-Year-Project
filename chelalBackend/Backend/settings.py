@@ -197,6 +197,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://chelal-hms-react.onrender.com",  # Update with your frontend URL
+    "https://chelal-hms-react.vercel.app",  # Vercel frontend domain
     "https://www.brikamahms.org",  # Production frontend domain
 ]
 

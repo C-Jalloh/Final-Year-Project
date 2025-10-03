@@ -10,9 +10,13 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.SerializerMethodField()
     role = RoleSerializer(read_only=True)
     role_id = serializers.IntegerField(write_only=True, required=False)
     # profile_image = serializers.ImageField(required=False, allow_null=True)
+    
+    def get_id(self, obj):
+        return str(obj.id)
     
     class Meta:
         model = User
