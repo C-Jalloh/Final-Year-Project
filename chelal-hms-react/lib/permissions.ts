@@ -27,7 +27,13 @@ export const hasAnyRole = (user: User | null, roles: Role[]): boolean => {
   }
   const userRole = typeof user.role === 'string' ? user.role : user.role.name
   const hasRole = roles.includes(userRole as Role)
-  console.log('hasAnyRole check:', { userRole, roles, hasRole })
+  console.log('hasAnyRole check:', { 
+    userRole, 
+    userRoleType: typeof userRole,
+    roles, 
+    rolesIncludesUserRole: roles.includes(userRole as Role),
+    hasRole 
+  })
   return hasRole
 }
 
